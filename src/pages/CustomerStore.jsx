@@ -64,7 +64,7 @@ export default function CustomerStore() {
       alert('Please fill out all address details.');
       return;
     }
-    const orderId = 'SKR-' + Math.floor(100000 + Math.random() * 900000);
+    const orderId = 'SRK-' + Math.floor(100000 + Math.random() * 900000);
     setActiveOrderId(orderId);
     setCheckoutStep('payment');
   }
@@ -91,7 +91,7 @@ export default function CustomerStore() {
     }
   }
 
-  const upiPayUrl = `upi://pay?pa=6302347068-3@ybl&pn=SKR%20Mens%20Wear&am=${totalAmount}&cu=INR&tn=Order%20${activeOrderId}`;
+  const upiPayUrl = `upi://pay?pa=6302347068-3@ybl&pn=SRK%20Mens%20Wear&am=${totalAmount}&cu=INR&tn=Order%20${activeOrderId}`;
   const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(upiPayUrl)}`;
 
   return (
@@ -99,14 +99,14 @@ export default function CustomerStore() {
       
       {/* Top Banner Notice */}
       <div className="bg-[#171717] text-[#a3a3a3] text-[11px] uppercase tracking-[0.2em] py-2 text-center border-b border-[#262626]">
-        Keesara Luxury Flagship Store — Free Express Delivery Across India
+        SRK Mens Wear - Keesara Flagship Store — Express Delivery Across India
       </div>
 
       {/* Main Navigation */}
       <header className="sticky top-0 z-40 bg-[#0d0d0d]/90 backdrop-blur-md border-b border-[#262626] px-6 py-4 flex justify-between items-center">
         <div>
-          <h1 className="text-2xl font-black tracking-[0.25em] text-[#d4af37]">SKR LUXURY</h1>
-          <p className="text-[9px] uppercase tracking-[0.3em] text-[#737373]">Men's Couture — Keesara</p>
+          <h1 className="text-2xl font-black tracking-[0.25em] text-[#d4af37]">SRK LUXURY</h1>
+          <p className="text-[9px] uppercase tracking-[0.3em] text-[#737373]">Men's Wear — Keesara</p>
         </div>
 
         <nav className="hidden lg:flex gap-6 text-xs uppercase tracking-[0.15em] text-[#a3a3a3]">
@@ -128,34 +128,6 @@ export default function CustomerStore() {
           </span>
         </button>
       </header>
-
-      {/* Hero Banner Section */}
-      <section className="relative bg-[#17171d] border-b border-[#262626] overflow-hidden my-4 mx-4 rounded-3xl">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-12 items-center min-h-[380px]">
-          <div className="p-8 md:p-12 md:col-span-6 space-y-4">
-            <span className="text-[10px] uppercase tracking-[0.3em] text-[#d4af37] font-sans font-semibold">Festive & Wedding Collection 2026</span>
-            <h2 className="text-4xl md:text-5xl font-light tracking-wide text-white leading-tight">
-              ROYAL HERITAGE <br /><span className="text-[#d4af37] font-serif italic">Fiza Collection</span>
-            </h2>
-            <p className="text-xs text-[#a3a3a3] font-sans leading-relaxed max-w-md">
-              Handcrafted bandhgalas, silk kurtas, and tailored indowestern ensembles designed for royalty.
-            </p>
-            <button 
-              onClick={() => handleCategoryFilter('All')}
-              className="mt-4 bg-[#d4af37] hover:bg-[#b89628] text-black font-sans font-bold text-xs uppercase tracking-[0.2em] px-8 py-3 rounded-full transition"
-            >
-              Explore Collection
-            </button>
-          </div>
-          <div className="md:col-span-6 h-full flex justify-end">
-            <img 
-              src="https://images.unsplash.com/photo-1597983073493-88cd35cf03b0?w=1000" 
-              alt="Hero Banner" 
-              className="h-[380px] w-full object-cover rounded-r-3xl opacity-90"
-            />
-          </div>
-        </div>
-      </section>
 
       {/* Shop By Category Circle Avatars */}
       <section className="max-w-7xl mx-auto px-6 py-8">
@@ -208,7 +180,7 @@ export default function CustomerStore() {
 
                 <div className="p-4 space-y-3 font-sans">
                   <div>
-                    <span className="text-[10px] uppercase tracking-widest text-[#737373]">{p.category || 'SKR Exclusive'}</span>
+                    <span className="text-[10px] uppercase tracking-widest text-[#737373]">{p.category || 'SRK Exclusive'}</span>
                     <h4 className="font-serif text-sm text-white truncate mt-0.5">{p.name}</h4>
                   </div>
 
