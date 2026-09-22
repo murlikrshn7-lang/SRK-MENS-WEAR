@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import imageCompression from 'browser-image-compression';
 import { supabase } from '../supabaseClient';
 
 export default function AdminDashboard() {
@@ -37,21 +38,33 @@ export default function AdminDashboard() {
     if (pData) setProducts(pData);
   }
 
-  // Handle direct file upload from phone or computer
+  // Handle direct file upload from phone or computer with client-side compression
   async function handleImageUpload(e) {
     try {
       setUploading(true);
-      const file = e.target.files[0];
-      if (!file) return;
+      const rawFile = e.target.files[0];
+      if (!rawFile) return;
 
-      const fileExt = file.name.split('.').pop();
+      // 1. Compression Settings (~200KB target size)
+      const options = {
+        maxSizeMB: 0.2,           // Max size around 200 KB
+        maxWidthOrHeight: 1200,   // Max dimension suitable for mobile/desktop
+        useWebWorker: true,
+      };
+
+      // 2. Compress the image in browser memory before uploading
+      const compressedFile = await imageCompression(rawFile, options);
+
+      const fileExt = rawFile.name.split('.').pop();
       const fileName = `${Date.now()}.${fileExt}`;
       const filePath = `product-photos/${fileName}`;
 
-      // Upload file to Supabase Storage 'products' bucket
+      // 3. Upload the compressed file blob to Supabase Storage
       const { error: uploadError } = await supabase.storage
         .from('products')
-        .upload(filePath, file);
+        .upload(filePath, compressedFile, {
+          contentType: compressedFile.type,
+        });
 
       if (uploadError) {
         throw uploadError;
@@ -138,11 +151,11 @@ export default function AdminDashboard() {
               onChange={handleImageUpload}
               className="w-full text-slate-300 text-xs file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-amber-500 file:text-slate-950 hover:file:bg-amber-400 cursor-pointer"
             />
-            {uploading && <p className="text-amber-400 text-xs animate-pulse">Uploading photo from phone...</p>}
+            {uploading && <p className="text-amber-400 text-xs animate-pulse">Compressing & uploading photo from phone...</p>}
             {newProduct.image && (
               <div className="flex items-center gap-3 pt-2">
                 <img src={newProduct.image} alt="Preview" className="w-16 h-16 object-cover rounded-lg border border-amber-400/50" />
-                <span className="text-emerald-400 font-bold text-xs">✓ Photo uploaded & ready</span>
+                <span className="text-emerald-400 font-bold text-xs">✓ Photo compressed, uploaded & ready</span>
               </div>
             )}
           </div>
@@ -227,7 +240,7 @@ export default function AdminDashboard() {
               disabled={uploading}
               className="w-full bg-amber-500 hover:bg-amber-400 text-slate-950 font-black py-3 rounded-xl transition uppercase tracking-wider text-sm"
             >
-              {uploading ? 'Uploading Photo...' : 'Publish Item to Store'}
+              {uploading ? 'Compressing & Uploading...' : 'Publish Item to Store'}
             </button>
           </div>
         </form>
